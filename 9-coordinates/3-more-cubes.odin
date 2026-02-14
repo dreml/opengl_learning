@@ -12,6 +12,9 @@ import "vendor:glfw"
 GL_MAJOR_VERSION :: 3
 GL_MINOR_VERSION :: 3
 
+SCREEN_WIDTH :: 1024
+SCREEN_HEIGHT :: 768
+
 vertexShaderSource :: string(#load("cube.vs"))
 fragShaderSource :: string(#load("cube.fs"))
 wallAsset :: "wall.png"
@@ -32,7 +35,7 @@ main :: proc() {
 	glfw.WindowHint(glfw.CONTEXT_VERSION_MINOR, 3)
 	glfw.WindowHint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
 
-	window := glfw.CreateWindow(800, 600, "First window", nil, nil)
+	window := glfw.CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "First window", nil, nil)
 	if window == nil {
 		description, code := glfw.GetError()
 		fmt.eprintln(#location(window), description, code)
@@ -336,7 +339,7 @@ main :: proc() {
 		gl.UniformMatrix4fv(gl.GetUniformLocation(program, "view"), 1, false, &view[0][0])
 
 		projection := glm.mat4(1)
-		projection *= glm.mat4Perspective(glm.radians_f32(45), 1920 / 1280, 0.1, 100)
+		projection *= glm.mat4Perspective(glm.radians_f32(45), SCREEN_WIDTH / SCREEN_HEIGHT, 0.1, 100)
 		gl.UniformMatrix4fv(gl.GetUniformLocation(program, "projection"), 1, false, &projection[0][0])
 
 		gl.Uniform1f(gl.GetUniformLocation(program, "mixValue"), f32(mixValue))
